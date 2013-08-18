@@ -1,0 +1,123 @@
+
+#Extract most known archives
+extract () {
+    if [ -f $1 ] ; then
+      case $1 in
+        *.tar.bz2)   tar xjf $1     ;;
+        *.tar.gz)    tar xzf $1     ;;
+        *.bz2)       bunzip2 $1     ;;
+        *.rar)       unrar e $1     ;;
+        *.gz)        gunzip $1      ;;
+        *.tar)       tar xf $1      ;;
+        *.tbz2)      tar xjf $1     ;;
+        *.tgz)       tar xzf $1     ;;
+        *.zip)       unzip $1       ;;
+        *.Z)         uncompress $1  ;;
+        *.7z)        7z x $1        ;;
+        *)     echo "'$1' cannot be extracted via extract()" ;;
+         esac
+     else
+         echo "'$1' is not a valid file"
+     fi
+}
+
+#Make and cd into directory
+function mcd() {
+  mkdir -p "$1" && cd "$1";
+}
+
+#Go Back n Directories
+b() {
+    str=""
+    count=0
+    while [ "$count" -lt "$1" ];
+    do
+        str=$str"../"
+        let count=count+1
+    done
+    cd $str
+}
+
+#Do sudo to a command, or do sudo to the last typed command if no argument given
+s(){
+    if [[ $# == 0 ]]; then
+        sudo $(history -p '!!')
+    else
+        sudo "$@"
+    fi
+}
+
+# This function provides you with an alias "m" that can have an optional param
+# (the commit message) or will present the user with some params to choose from
+# for their commit message.
+function m(){
+  git add . -A
+  if [ -z "$1" ]
+    then
+      N=0
+      COMMITS=('Theme development' 'Module development' 'Upgrades' 'Misc development work')
+      for i in "${COMMITS[@]}"
+      do
+        N=`expr $N + 1`
+        echo "[${N}] ${i}"
+      done
+
+      read selection
+
+      MESSAGE=${COMMITS[selection]}
+      echo "${MESSAGE}"
+      git commit -m "${MESSAGE}"
+
+    else
+      echo 'other'
+      git commit -m $1
+  fi
+}
+
+# Depends on AWK, SED, and OSX's open command.
+function github() {
+  local github_url
+
+  if ! git remote -v >/dev/null; then
+    return 1
+  fi
+
+  # get remotes for fetch
+  github_url="`git remote -v | grep github\.com | grep \(fetch\)$`"
+
+  if [ -z "$github_url" ]; then
+    echo "A GitHub remote was not found for this repository."
+    return 1
+  fi
+
+  # look for origin in remotes, use that if found, otherwise use first result
+  if [ "echo $github_url | grep '^origin' >/dev/null 2>&1" ]; then
+    github_url="`echo $github_url | grep '^origin'`"
+  else
+    github_url="`echo $github_url | head -n1`"
+  fi
+
+  github_url="`echo $github_url | awk '{ print $2 }' | sed 's/git@github\.com:/http:\/\/github\.com\//g'`"
+  open $github_url
+}
+
+# Generate Password
+genpasswd() {
+  local l=$1
+    [ "$l" == "" ] && l=20
+    tr -dc A-Za-z0-9_ < /dev/urandom | head -c ${l} | xargs
+}
+
+# Determine size of a file or total size of a directory
+function fs() {
+  if du -b /dev/null > /dev/null 2>&1; then
+    local arg=-sbh
+  else
+    local arg=-sh
+  fi
+  if [[ -n "$@" ]]; then
+    du $arg -- "$@"
+  else
+    du $arg .[^.]* *
+  fi
+}

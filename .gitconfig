@@ -1,0 +1,38 @@
+[hub]
+    protocol = ssh
+[user]
+    name = Nicolas Widart
+    email = n.widart@gmail.com
+[color]
+    status = auto
+    diff = auto
+    branch = auto
+[mergetool]
+    keepBackup = false
+    prompt = false
+[credential]
+    helper = osxkeychain
+[alias]
+    co = checkout
+    ci = commit
+    st = status
+    br = branch
+    hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
+    type = cat-file -t
+    dump = cat-file -p
+    count   = !git shortlog -sn
+    gaa = git add .
+    gc = git commit -m
+[difftool "Kaleidoscope"]
+    cmd = ksdiff --partial-changeset --relative-path \"$MERGED\" -- \"$LOCAL\" \"$REMOTE\"
+[diff]
+    tool = Kaleidoscope
+[difftool]
+    prompt = false
+[mergetool "Kaleidoscope"]
+    cmd = ksdiff --merge --output \"$MERGED\" --base \"$BASE\" -- \"$LOCAL\" --snapshot \"$REMOTE\" --snapshot
+    trustExitCode = true
+[merge]
+    tool = Kaleidoscope
+[core]
+    excludesfile = /Users/Nico/.gitignore_global

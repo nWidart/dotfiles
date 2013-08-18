@@ -1,0 +1,54 @@
+
+# Helpers
+alias nuketrash="sudo rm -rvf ~/.Trash/.* && sudo rm -rvf ~/.Trash/*"
+
+# Shortcuts
+alias rmf="rm -rf"
+alias phpext="php -m | grep"
+
+# Reload zsh config file
+alias reload=". ~/.zshrc && echo 'ZSH config reloaded from ~/.zshrc'"
+
+# CD Shortcuts
+alias gitdir='cd /Users/Nico/Sites/GitHub_Repositories'
+alias sites='cd /Users/Nico/Sites'
+
+# Open with ST3
+# alias subl='open -a "Sublime Text"'
+alias subl="/usr/bin/open -a 'Applications/Sublime Text.app'"
+alias hideDesktop="Defaults write com.apple.finder CreateDesktop -bool false && killall Finder"
+alias showDesktop="Defaults write com.apple.finder CreateDesktop -bool true && killall Finder"
+
+# Make a quick webserver
+alias ss="python -m SimpleHTTPServer"
+
+# Git Shortcuts
+alias gl="git log --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+alias gaa="git add ."
+alias gcm="git commit -m"
+
+# Movement shortcuts
+alias ..='cd ..'
+alias ...='cd ../../'
+alias ....='cd ../../../'
+alias .....='cd ../../../../'
+alias ......='cd ../../../../../'
+
+# Utilities
+alias c='clear'
+alias l.='ls -d .* --color=auto' #Hidden files only
+
+# Laravel
+alias l4="composer create-project laravel/laravel"
+
+# show active network listeners
+alias netlisteners='lsof -i -P | grep LISTEN'
+
+# Laravel Aliases
+alias g:c="php artisan generate:controller"
+alias g:m="php artisan generate:model"
+alias g:v="php artisan generate:view"
+alias g:mig="php artisan generate:migration"
+alias g:a="php artisan generate:assets"
+alias g:t="php artisan generate:test"
+alias g:r="php artisan generate:resource"
